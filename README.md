@@ -9,9 +9,7 @@
 - [Legal stuff](#License)
 
 <p align="center" width="100%">
-    <img src="/assets/logo.png">
-    <br>
-    <img src="https://github.com/datawater/gmachine/actions/workflows/ci.yml/badge.svg">
+    <img src="https://github.com/datawater/gm/actions/workflows/ci.yml/badge.svg">
 </p>
 
 ## Quickstart

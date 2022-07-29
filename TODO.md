@@ -1,12 +1,12 @@
 # GM
 
 ##  Grandmaster machine
-### Grandmaster machine is a virtual machine with its own 
+### Grandmaster machine, a virtual machine with its own assembly language
 
 <p align="center" width="100%">
     <img src="/assets/logo.png">
     <br>
-    <img src="https://github.com/datawater/gmachine/actions/workflows/ci.yml/badge.svg">
+    <img src="https://github.com/datawater/GM/actions/workflows/ci.yml/badge.svg">
 </p>
 
 - [ ] ./build_msvc.bat:10:rem TODO: implement a release build for MSVC
