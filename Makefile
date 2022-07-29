@@ -1,13 +1,13 @@
 CFLAGS = -Wall -Wextra -std=c11
 
 main:
-	rm out/ -fdr
+	@rm -fdr out/ 
 	mkdir out
 	make gasm
 	make gm
 
 release:
-	rm out/ -fdr
+	@rm -fdr out/
 	mkdir out
 	make gasm-release
 	make gm-release
