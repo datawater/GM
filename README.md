@@ -1,7 +1,7 @@
 # GM
 
 ##  Grandmaster machine
-### Grandmaster machine is a virtual machine with its own 
+### Grandmaster machine, a virtual machine with its own assembly language
 
 - [Quickstart](#Quickstart)
 - [Todos](#Todos)
