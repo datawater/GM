@@ -3,16 +3,16 @@ push 1 # Stack: 1
 pop # Stack:
 push 69 #stack: 69
 push 420 #stack: 69 420
-dup #stack: 69 420 420
-over #stack: 420 69 420
-swap #stack: 420 420 69
-add #stack: 420 489
-sub #stack: 69
-pop #stack:
+swap #stack: 420 69
+dup #stack 420 69 69
+add 1 #stack 420 69 70
+sub 1 #stack 420 69 69
+over #stack 70 69 420
+cls #stack: 
 push 69 #stack: 69
-push 420 #stack: 69 420
-dup #stack: 69 420 420
-over #stack: 420 69 420
-swap #stack: 420 420 69
-dup #stack: 420 420 69 69
-cls # clears the stack so stack: 
+div  23 #stack: 3
+mul 2 #stack: 6
+sub 4 #stack: 2
+bitl 4 #stack: 32
+bitr 4 #stack: 2
+cls # Stack: 

@@ -12,7 +12,11 @@ typedef enum {
 	GASM_OVER,
 	GASM_CLS,
 	GASM_ADD,
-	GASM_SUB
+	GASM_SUB,
+	GASM_MUL,
+	GASM_DIV,
+	GASM_BIT_L,
+	GASM_BIT_R
 } ASM_INSTRUCTION_TYPE;
 
 typedef struct {
@@ -51,8 +55,12 @@ BINARY_ASM_INSTRUCTION gasm_instruction_to_binary_instruction(const ASM_INSTRUCT
 		case GASM_SWAP:  	   return (BINARY_ASM_INSTRUCTION) {0x05, -1}; // 05
 		case GASM_OVER:		   return (BINARY_ASM_INSTRUCTION) {0x06, -1}; // 06
 		case GASM_CLS:  	       return (BINARY_ASM_INSTRUCTION) {0x07, -1}; // 07
-		case GASM_ADD:  	   return (BINARY_ASM_INSTRUCTION) {0x08, -1}; // 08
-		case GASM_SUB:  	       return (BINARY_ASM_INSTRUCTION) {0x09, -1}; // 09
+		case GASM_ADD:  	   return (BINARY_ASM_INSTRUCTION) {0x08, instruction.arguments}; // 08
+		case GASM_SUB:  	       return (BINARY_ASM_INSTRUCTION) {0x09, instruction.arguments}; // 09
+		case GASM_MUL:		   return (BINARY_ASM_INSTRUCTION) {0x0A, instruction.arguments}; // 10
+		case GASM_DIV:		   return (BINARY_ASM_INSTRUCTION) {0x0B, instruction.arguments}; // 11
+		case GASM_BIT_L:		   return (BINARY_ASM_INSTRUCTION) {0x0C, instruction.arguments}; // 12
+		case GASM_BIT_R:		   return (BINARY_ASM_INSTRUCTION) {0x0D, instruction.arguments}; // 13
 		default: 						   return (BINARY_ASM_INSTRUCTION) {0xFF, -1};
 	}
 }
@@ -74,9 +82,17 @@ ASM_INSTRUCTION gasm_text_instruction_to_instruction(const TEXT_ASM_INSTRUCTION 
 	} else if (strcmp(instruction.type, "cls") == 0) {
 		return (ASM_INSTRUCTION) {GASM_CLS, -1};
 	} else if (strcmp(instruction.type, "add") == 0) {
-		return (ASM_INSTRUCTION) {GASM_ADD, -1};
+		return (ASM_INSTRUCTION) {GASM_ADD, instruction.arguments};
 	} else if (strcmp(instruction.type, "sub") == 0) {
-		return (ASM_INSTRUCTION) {GASM_SUB, -1};
+		return (ASM_INSTRUCTION) {GASM_SUB, instruction.arguments};
+	} else if (strcmp(instruction.type, "mul") == 0) {
+		return (ASM_INSTRUCTION) {GASM_MUL, instruction.arguments};
+	} else if (strcmp(instruction.type, "div") == 0) {
+		return (ASM_INSTRUCTION) {GASM_DIV, instruction.arguments};
+	} else if (strcmp(instruction.type, "bitl") == 0) {
+		return (ASM_INSTRUCTION) {GASM_BIT_L, instruction.arguments};
+	} else if (strcmp(instruction.type, "bitr") == 0) {
+		return (ASM_INSTRUCTION) {GASM_BIT_R, instruction.arguments};
 	} else {
 		return (ASM_INSTRUCTION) {255, -1};
 	}
@@ -91,15 +107,20 @@ ASM_INSTRUCTION  gasm_binary_instruction_to_instruction(const BINARY_ASM_INSTRUC
 		case 0x05:  	   return (ASM_INSTRUCTION) {GASM_SWAP, -1};
 		case 0x06:		   return (ASM_INSTRUCTION) {GASM_OVER, -1};
 		case 0x07:  	   return (ASM_INSTRUCTION) {GASM_CLS, -1};
-		case 0x08:  	   return (ASM_INSTRUCTION) {GASM_ADD, -1};
-		case 0x09:  	   return (ASM_INSTRUCTION) {GASM_SUB, -1};
+		case 0x08:  	   return (ASM_INSTRUCTION) {GASM_ADD, instruction.arguments};
+		case 0x09:  	   return (ASM_INSTRUCTION) {GASM_SUB, instruction.arguments};
+		case 0x0A:		   return (ASM_INSTRUCTION) {GASM_MUL, instruction.arguments};
+		case 0x0B:		   return (ASM_INSTRUCTION) {GASM_DIV, instruction.arguments};
+		case 0x0C: 	       return (ASM_INSTRUCTION) {GASM_BIT_L, instruction.arguments};
+		case 0x0D:		   return (ASM_INSTRUCTION) {GASM_BIT_R, instruction.arguments};
 		default: 			   return (ASM_INSTRUCTION) {255, -1};
 	}
 }
 
 void gasm_write_binary_instruction(FILE* fd, const BINARY_ASM_INSTRUCTION instruction) {
-	fprintf(fd, "%c", instruction.type); 
-	instruction.type != 0x02 ? fprintf(fd, "%c",'\0') : fprintf(fd, ":%ld%c", instruction.arguments, '\0');
+	uint8_t t = instruction.type;
+	fprintf(fd, "%c", t); 
+	t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D  ? fprintf(fd, ":%ld%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
 }
 
 #endif // ASM_IMPLEMENTATION
