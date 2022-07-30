@@ -6,17 +6,12 @@
 
 typedef uint64_t Word;
 
-typedef struct {
-	Word stack[GM_STACK_CAPASITY];
-	size_t stack_size;
-} State;
 
 typedef struct {
 	Word stack[GM_STACK_CAPASITY];
 	size_t stack_size;
 	ASM_INSTRUCTION program[200000];
 	size_t program_size;
-	State history[200000];
 } GM;
 
 typedef enum {
@@ -150,14 +145,10 @@ void gm_evaluate_program(GM *gm) {
 					gm_error(GM_JUMP_ITSELF);
 				}
 
-				gm->stack_size = gm->history[gm->program[i].arguments-1].stack_size;
-				memcpy(gm->stack, gm->history[gm->program[i].arguments-1].stack, gm->history[gm->program[i].arguments-1].stack_size);
 				i = (gm->program[i].arguments)-1;
 			} break;
 			default: {};
 		}
-		Word stack_[GM_STACK_CAPASITY] = {0}; memcpy(stack_, gm->stack, GM_STACK_CAPASITY);
-		gm->history[j++] = (State) {.stack = {*stack_}, .stack_size = size_tdup(gm->stack_size)};
 		print_stack(gm);
 	}
 }
