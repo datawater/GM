@@ -86,11 +86,12 @@ int main(int argc, char** argv) {
 			} else if (buffer[i+1] == 0) {
 				type = buffer[i];
 			}
-			gm_evaluate_instruction(&gm, gasm_binary_instruction_to_instruction((BINARY_ASM_INSTRUCTION) {type, atoi(argument)}));
-			print_stack(&gm);
+			gm.program[gm.program_size] = gasm_binary_instruction_to_instruction((BINARY_ASM_INSTRUCTION) {type, atoi(argument)});
+			gm.program_size++;
 			j = 0;
 		}
 	}
+	gm_evaluate_program(&gm);
 	free(PIPEDORNOT);
 	return 0;
 }
