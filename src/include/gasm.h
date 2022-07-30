@@ -8,6 +8,7 @@ typedef enum {
 		Arethmetic operations: [x]
 		bitshit operations:		  [x]
 		Jump instruction:			  [x]
+		variables:						  [  ]
 		if statements:				  [  ]
 		halt instruction:			  [  ]
 		print instruction:			  [  ]
