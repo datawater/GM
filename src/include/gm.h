@@ -51,7 +51,6 @@ void gm_warn(GM_WARN warn) {
 }
 
 void gm_evaluate_program(GM *gm) {
-	int j = -1;
 	const int prog_size = (int) gm->program_size;
 	for (int i = 0; i < prog_size; i++) {	
 		switch (gm->program[i].type) {
@@ -144,9 +143,12 @@ void gm_evaluate_program(GM *gm) {
 				if (gm->program_size-1 == gm->program[i].arguments) {
 					gm_error(GM_JUMP_ITSELF);
 				}
-
 				i = (gm->program[i].arguments)-1;
 			} break;
+			case GASM_HALT: {
+				// printf("%lu",gm->program[i].arguments);
+				exit(gm->program[i].arguments);
+			}
 			default: {};
 		}
 		print_stack(gm);

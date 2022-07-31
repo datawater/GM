@@ -47,14 +47,18 @@ void parse_file(char* input, char* output) {
 		exit(1);
 	}
 
-	int len = 256; char* line = malloc(sizeof(char)* len); int line_num = 1;
-	while (fgets(line, len, inputfp)) {
+	int len = 256; char* line = malloc(sizeof(char)* len); int line_num = 1; int q = 1;
+	while (fgets(line, len, inputfp) && q != 0) {
 		line = trim(line); 
 		if (line[0] == '#') {continue;}
 		char type[12]; 	memset(type, 0, 12); char args[256]; memset(args, 0, 256); int i = 0;
 		for (; i < (int) strlen(line); ++i) {
 			if (line[i] == ' ') {break;}
 			type[i] = line[i]; 
+		}
+
+		if (strcmp(type, "halt") == 0) {
+			q = 0;
 		}
 
 		line += i; line = trim(line);  
