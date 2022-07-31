@@ -5,7 +5,6 @@
 
 - [Quickstart](#Quickstart)
 - [Todos](#Todos)
-- [Credits](#Credits)
 - [Legal stuff](#License)
 
 <p align="center" width="100%">
@@ -27,11 +26,6 @@ or
 ```shell
 make todo
 ```
-
-## Credits
-
-### Libraries used:
-- flag.h            by tsoding [https://github.com/tsoding/flag.h](https://github.com/tsoding/flag.h)
 
 ## License
 [License](/LICENSE)
