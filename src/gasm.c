@@ -86,7 +86,7 @@ void parse_file(char* input, char* output) {
 					free(errmsg);
 					exit(1);
 				}
-				if (strlen(strstr(args, " ")) > 0 || strlen(strstr(args, ",")) > 0) {
+				if (strstr(args, " ") || strstr(args, ",")) {
 					char* errmsg = malloc(sizeof(char) * 80); sprintf(errmsg,"There are multiple arguments where there need to be one. line: %i\n", line_num);
 					!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 					free(errmsg);
