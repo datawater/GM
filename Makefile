@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c11
+CFLAGS = -Wall -Wextra -std=c11 -Wformat-security
 
 main:
 	@rm -fdr out/ 

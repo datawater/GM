@@ -42,7 +42,7 @@ void parse_file(char* input, char* output) {
 
 	if (inputfp == NULL || outputfp == NULL) {
 		char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Error opening a file: %s\n", strerror(errno));
-		!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+		!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 		free(errmsg);
 		exit(1);
 	}
@@ -74,7 +74,7 @@ void parse_file(char* input, char* output) {
 		if (strcmp(type, "push") == 0 || strcmp(type, "add") == 0 || strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 || strcmp(type, "div") == 0 || strcmp(type, "bitl") == 0 || strcmp(type, "bitr") == 0 || strcmp(type, "jmp") == 0 || strcmp(type, "add") == 0 || strcmp(type, "halt") == 0) {
 			if (strlen(args) == 0) {
 				char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Argument is not on line: %i\n", line_num);
-				!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+				!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 				free(errmsg);
 				exit(1);
 			}
@@ -82,13 +82,13 @@ void parse_file(char* input, char* output) {
 			if (strcmp(type, "push") != 0) {
 				if (atoi(args) == 0 && args[0] != '0') {				
 					char* errmsg = malloc(sizeof(char) * 80); sprintf(errmsg,"Argument is a string when it doesnt neet to be a string on line: %i\n", line_num);
-					!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+					!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 					free(errmsg);
 					exit(1);
 				}
 				if (strlen(strstr(args, " ")) > 0 || strlen(strstr(args, ",")) > 0) {
 					char* errmsg = malloc(sizeof(char) * 80); sprintf(errmsg,"There are multiple arguments where there need to be one. line: %i\n", line_num);
-					!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+					!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 					free(errmsg);
 					exit(1);
 				}
@@ -98,7 +98,7 @@ void parse_file(char* input, char* output) {
 		ASM_INSTRUCTION instruction = gasm_text_instruction_to_instruction((TEXT_ASM_INSTRUCTION) {type, atoi(args)});
 		if (instruction.type == 255) {
 			char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Invalid Assembly instruction: %s\n", type);
-			!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+			!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 			free(errmsg);
 			exit(1);
 		}
