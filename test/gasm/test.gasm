@@ -16,5 +16,5 @@ sub 4 #stack: 2
 bitl 4 #stack: 32
 bitr 4 #stack: 2
 cls # Stack: 
-halt 1 # Exits with the exit code x
+halt 0 # Exits with the exit code x
 #jmp 0 # jumps to the first line (lines are numbered from 0)

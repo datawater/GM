@@ -25,7 +25,7 @@ int *PIPEDORNOT;
 void usage() {
 	char* author  = "datawater <datawater1@gmail.com>";
 	char* version = malloc(sizeof(char)*6); snprintf(version, (size_t) 6, "%d.%d.%d", MAJOR_VERSION, MINOR_VERSION, SMALL_VERSION);
-	if (!PIPEDORNOT) {
+	if (*PIPEDORNOT) {
 		printf("Author: %s\n",  author);
 		printf("Version: %s\n", version);
 		printf("Usage:\n");
@@ -42,7 +42,6 @@ void usage() {
 
 int main(int argc, char** argv) {
 	PIPEDORNOT = malloc(sizeof(int));
-	// TODO: detect `gm > x` piping as well
 	*PIPEDORNOT = !(isatty(STDOUT_FILENO));
 	static GM gm = {0};
 

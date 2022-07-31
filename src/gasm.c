@@ -22,7 +22,7 @@ int *PIPEDORNOT;
 void usage() {
 	char* author  = "datawater <datawater1@gmail.com>";
 	char* version = malloc(sizeof(char)*6); snprintf(version, (size_t) 6, "%d.%d.%d", MAJOR_VERSION, MINOR_VERSION, SMALL_VERSION);
-	if (!PIPEDORNOT) {
+	if (*PIPEDORNOT) {
 		printf("Author: %s\n",  author);
 		printf("Version: %s\n", version);
 		printf("Usage:\n");
@@ -71,11 +71,28 @@ void parse_file(char* input, char* output) {
 		}
 		if (isspace(args[strlen(args)-1])) {args[strlen(args)-1] = '\0';}
 
-		if (atoi(args) == 0 && args[0] != '0' && strlen(args) != 0) {
-			char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Argument is not an int on line: %i\n", line_num);
-			!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
-			free(errmsg);
-			exit(1);
+		if (strcmp(type, "push") == 0 || strcmp(type, "add") == 0 || strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 || strcmp(type, "div") == 0 || strcmp(type, "bitl") == 0 || strcmp(type, "bitr") == 0 || strcmp(type, "jmp") == 0 || strcmp(type, "add") == 0 || strcmp(type, "halt") == 0) {
+			if (strlen(args) == 0) {
+				char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Argument is not on line: %i\n", line_num);
+				!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+				free(errmsg);
+				exit(1);
+			}
+
+			if (strcmp(type, "push") != 0) {
+				if (atoi(args) == 0 && args[0] != '0') {				
+					char* errmsg = malloc(sizeof(char) * 80); sprintf(errmsg,"Argument is a string when it doesnt neet to be a string on line: %i\n", line_num);
+					!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+					free(errmsg);
+					exit(1);
+				}
+				if (strlen(strstr(args, " ")) > 0 || strlen(strstr(args, ",")) > 0) {
+					char* errmsg = malloc(sizeof(char) * 80); sprintf(errmsg,"There are multiple arguments where there need to be one. line: %i\n", line_num);
+					!*PIPEDORNOT ? error(errmsg) : (void) printf(errmsg);
+					free(errmsg);
+					exit(1);
+				}
+			}
 		}
 
 		ASM_INSTRUCTION instruction = gasm_text_instruction_to_instruction((TEXT_ASM_INSTRUCTION) {type, atoi(args)});
@@ -96,7 +113,6 @@ void parse_file(char* input, char* output) {
 
 int main(int argc, char** argv) {
 	PIPEDORNOT = malloc(sizeof(int));
-	// TODO: detect `gm > x` piping as well
 	*PIPEDORNOT = !(isatty(STDOUT_FILENO));
 
 	if (argc < 2) {
