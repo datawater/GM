@@ -43,7 +43,7 @@ $ make && make test
 ## TODO
 
 ```shell
-$ make test
+$ make todo
 ```
 
 - [ ]  ./src/include/gasm.h:6: // TODO: implement new instructions such as: if (cmp)
