@@ -47,7 +47,7 @@ int main(int argc, char** argv) {
 
 	if (argc < 2) {
 		usage();
-		!*PIPEDORNOT ? error("Input file not provided") : printf("[ERROR] Input file not provided");
+		!*PIPEDORNOT ? error("Input file not provided") : (void) printf("[ERROR] Input file not provided");
 		exit(1);
 	} else if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1],"-h") == 0) {
 		usage();
@@ -55,7 +55,7 @@ int main(int argc, char** argv) {
 	}
 
 	if (!file_exist(argv[1])) {
-		!*PIPEDORNOT ? error("Input file does not exist") : printf("[ERROR] Input file does not exist");
+		!*PIPEDORNOT ? error("Input file does not exist") : (void) printf("[ERROR] Input file does not exist");
 		exit(1);
 	}
 

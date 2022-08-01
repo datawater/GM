@@ -39,6 +39,7 @@ void usage() {
 
 void parse_file(char* input, char* output) {
 	FILE* inputfp = fopen(input, "r"); FILE* outputfp = fopen(output, "wb");
+	gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x01, 0});
 
 	if (inputfp == NULL || outputfp == NULL) {
 		char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Error opening a file: %s\n", strerror(errno));
@@ -51,11 +52,13 @@ void parse_file(char* input, char* output) {
 	while (fgets(line, len, inputfp) && q != 0) {
 		line = trim(line); 
 		if (line[0] == '#') {continue;}
-		char type[12]; 	memset(type, 0, 12); char args[256]; memset(args, 0, 256); int i = 0;
+		char type[12]; 	memset(type, 0, 12); char *args = malloc(sizeof(char) * 256); memset(args, 0, 256); int i = 0;
 		for (; i < (int) strlen(line); ++i) {
 			if (line[i] == ' ') {break;}
 			type[i] = line[i]; 
 		}
+
+		if (type[strlen(type)-1] == '\n') {type[strlen(type)-1] = '\0';}
 
 		if (strcmp(type, "halt") == 0) {
 			q = 0;
@@ -92,6 +95,37 @@ void parse_file(char* input, char* output) {
 					free(errmsg);
 					exit(1);
 				}
+			} else {
+				if (strstr(args, "'")) {
+					// printf("String!\n");
+					ASM_INSTRUCTION instruction = gasm_text_instruction_to_instruction((TEXT_ASM_INSTRUCTION) {type, 3});
+					BINARY_ASM_INSTRUCTION binary_instruction = gasm_instruction_to_binary_instruction(instruction);
+					gasm_write_binary_instruction(outputfp, binary_instruction); // EOT
+					for (int j = 1; j < (int) strlen(args); j++) {
+						if (args[j] != '\'' && args[j-1] != '\\') {
+							gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, (int) args[j]});
+						}
+					}
+					continue;
+				} else if (strstr(args, " ") || strstr(args, ",")) {
+					char s[64];
+					for (int j = 0; j < (int) strlen(args); j++) {
+						if (args[j] == ' ') {
+							gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, atoi(s)});
+							memset(s, 0, 64); args += j+1; j = -1;
+						}
+						s[j] = args[j];
+					}
+					gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, atoi(s)});
+					continue;
+				} else {
+					if (strstr(args, " ") || strstr(args, ",")) {
+						char* errmsg = malloc(sizeof(char) * 80); sprintf(errmsg,"There are multiple arguments where there need to be one. line: %i\n", line_num);
+						!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
+						free(errmsg);
+						exit(1);
+					}
+				}
 			}
 		}
 
@@ -108,6 +142,7 @@ void parse_file(char* input, char* output) {
 		//fflush(outputfp);
 		line[0] = '\0';
 		++line_num;
+		//free(args);
 	}
 }
 
@@ -117,7 +152,7 @@ int main(int argc, char** argv) {
 
 	if (argc < 2) {
 		usage();
-		!*PIPEDORNOT ? error("Input file not provided") : printf("[ERROR] Input file not provided");
+		!*PIPEDORNOT ? error("Input file not provided") : (void) printf("[ERROR] Input file not provided");
 		exit(1);
 	} else if (strcmp(argv[1], "--help") == 0 || strcmp(argv[1],"-h") == 0) {
 		usage();
@@ -125,11 +160,11 @@ int main(int argc, char** argv) {
 	}
 
 	if (!file_exist(argv[1])) {
-		!*PIPEDORNOT ? error("Input file does not exist") : printf("[ERROR] Input file does not exist");
+		!*PIPEDORNOT ? error("Input file does not exist") : (void) printf("[ERROR] Input file does not exist");
 		exit(1);
 	}
 
-	argc < 3 ? (!*PIPEDORNOT ? warn("Ouput file not provided, Using the default one") : printf("[WARN] Output file not provided, Using the default one")) : (void) 0;
+	argc < 3 ? (!*PIPEDORNOT ? warn("Ouput file not provided, Using the default one") : (void) printf("[WARN] Output file not provided, Using the default one")) : (void) 0;
 
 	char* output_file = !(argc < 3) ? argv[2] : strcat(strdup(argv[1]), ".out.gm"); output_file[strlen(output_file)] = '\0';
 

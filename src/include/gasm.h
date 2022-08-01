@@ -28,7 +28,8 @@ typedef enum {
 	GASM_BIT_L,
 	GASM_BIT_R,
 	GASM_JMP,
-	GASM_HALT
+	GASM_HALT,
+	GASM_PRINT
 } ASM_INSTRUCTION_TYPE;
 
 typedef struct {
@@ -75,6 +76,7 @@ BINARY_ASM_INSTRUCTION gasm_instruction_to_binary_instruction(const ASM_INSTRUCT
 		case GASM_BIT_R:		   return (BINARY_ASM_INSTRUCTION) {0x0D, instruction.arguments}; // 13
 		case GASM_JMP:		   return (BINARY_ASM_INSTRUCTION) {0x0E, instruction.arguments}; // 14
 		case GASM_HALT: 	   return (BINARY_ASM_INSTRUCTION) {0x0F, instruction.arguments}; // 15
+		case GASM_PRINT:	   return (BINARY_ASM_INSTRUCTION) {0x10, instruction.arguments}; // 16
 		default: 						   return (BINARY_ASM_INSTRUCTION) {0xFF, -1};
 	}
 }
@@ -111,7 +113,9 @@ ASM_INSTRUCTION gasm_text_instruction_to_instruction(const TEXT_ASM_INSTRUCTION 
 		return (ASM_INSTRUCTION) {GASM_JMP, instruction.arguments};
 	} else if (strcmp(instruction.type, "halt") == 0) {
 		return (ASM_INSTRUCTION) {GASM_HALT, instruction.arguments};
-	}  else {
+	} else if (strcmp(instruction.type, "print") == 0) {
+		return (ASM_INSTRUCTION) {GASM_PRINT, instruction.arguments};
+	} else {
 		return (ASM_INSTRUCTION) {255, -1};
 	}
 }
@@ -133,6 +137,7 @@ ASM_INSTRUCTION  gasm_binary_instruction_to_instruction(const BINARY_ASM_INSTRUC
 		case 0x0D:		   return (ASM_INSTRUCTION) {GASM_BIT_R, instruction.arguments};
 		case 0x0E:		   return (ASM_INSTRUCTION) {GASM_JMP, instruction.arguments};
 		case 0x0F:		   return (ASM_INSTRUCTION) {GASM_HALT, instruction.arguments};
+		case 0x10:		   return (ASM_INSTRUCTION) {GASM_PRINT, instruction.arguments};
 		default: 			   return (ASM_INSTRUCTION) {255, -1};
 	}
 }
@@ -140,7 +145,7 @@ ASM_INSTRUCTION  gasm_binary_instruction_to_instruction(const BINARY_ASM_INSTRUC
 void gasm_write_binary_instruction(FILE* fd, const BINARY_ASM_INSTRUCTION instruction) {
 	uint8_t t = instruction.type;
 	fprintf(fd, "%c", t); 
-	t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D || t == 0x0E  || t == 0x0F ? fprintf(fd, ":%ld%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
+	t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D || t == 0x0E  || t == 0x0F || t == 0x10 ? fprintf(fd, ":%ld%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
 }
 
 #endif // ASM_IMPLEMENTATION

@@ -1,0 +1,6 @@
+push '69 420'
+print 11 # Print <mode>
+			 # 10 - ascii mode, no new line
+			 # 11 - ascii mode, new line
+			 # 12 - raw mode, no new line
+			 # 13 - raw node, new line

@@ -1,8 +1,7 @@
 nop # no operation
 push 1 # Stack: 1
 pop # Stack:
-push 69 #stack: 69
-push 420 #stack: 69 420
+push 69 420 #stack: 69 420
 swap #stack: 420 69
 dup #stack 420 69 69
 add 1 #stack 420 69 70
