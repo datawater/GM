@@ -12,8 +12,14 @@ release:
 	make gasm-release
 	make gm-release
 
-test: release
-	rm -fdr test/gm
+test-release: release
+	@rm -fdr test/gm
+	mkdir -p test/gm
+	./out/gasm test/gasm/test.gasm test/gm/testgm.gm
+	./out/gm test/gm/testgm.gm
+
+test: main
+	@rm -fdr test/gm	
 	mkdir -p test/gm
 	./out/gasm test/gasm/test.gasm test/gm/testgm.gm
 	./out/gm test/gm/testgm.gm
