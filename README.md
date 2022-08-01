@@ -42,12 +42,9 @@ $ make && make test
 
 ## TODO
 
-```shell
-$ make todo
-```
-
 - [ ]  ./src/include/gasm.h:6: // TODO: implement new instructions such as: if (cmp)
 - [ ]  A disassembler
+
 ## Screenshots
 
 [![App Screenshot](https://i.postimg.cc/7Pmtw6ML/Screenshot-from-2022-08-01-15-11-25.png)](https://postimg.cc/QVKJqjzL)
@@ -63,14 +60,6 @@ If you have any feedback, please reach out to me at
 <br>
 Or open an issue!
 
-## TODO
-
-```shell
-$ make test
-```
-
-- [ ]  ./src/include/gasm.h:6: // TODO: implement new instructions such as: if (cmp)
-- [ ]  A disassembler
 ## Authors
 
 - [@datawater](https://www.github.com/datawater)
