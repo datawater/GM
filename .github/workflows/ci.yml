@@ -20,12 +20,13 @@ jobs:
           make
         env:
           CC: clang
-  build-solaris:
+  build-solaris-gcc:
     runs-on: macos-12
     steps:
-      - name: Solaris-vm
-      uses: vmactions/solaris-vm@v0.0.8
-      run: |
-        make
-      env:
-        CC: gcc
+      - uses: actions/checkout@v2
+      - uses: vmactions/solaris-vm@v0
+      - name: Build on solaris with gcc
+        run: |
+          make
+        env:
+          CC: gcc
