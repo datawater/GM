@@ -43,8 +43,6 @@ $ make && make test
 ## TODO
 
 - [ ]  ./src/include/gasm.h:6: // TODO: implement new instructions such as: if (cmp)
-- [ ] ./build_msvc.bat:12:rem TODO: Implement a release build for MSVC
-- [ ] ./build_msvc.bat:13:rem TODO: Implement tests for MSVC.
 - [ ]  A disassembler
 
 ## Screenshots
