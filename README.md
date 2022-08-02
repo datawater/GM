@@ -11,6 +11,9 @@ GM - Grandmaster machine. A virtual machine with its own assembler (coming soon:
     <img src="https://i.postimg.cc/1tfjn1KF/logo-horizontal.png">
     <br>
     <img src="https://github.com/datawater/gm/actions/workflows/ci.yml/badge.svg?style=flat-square">
+    <img src="https://img.shields.io/github/last-commit/datawater/GM?style=flat-square">
+    <img src="https://img.shields.io/badge/license-GPL--3-orange?style=flat-square">
+    <img src="https://img.shields.io/badge/platform-linux|macos-light?style=flat-square">
 </p>
 
 <br>
