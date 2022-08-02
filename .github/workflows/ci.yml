@@ -20,12 +20,3 @@ jobs:
           make
         env:
           CC: clang
-  build-macos:
-    runs-on: macOS-latest
-    steps:
-      - uses: actions/checkout@v1
-      - name: Build on macos with clang
-        run: |
-          make
-        env:
-          CC: clang
