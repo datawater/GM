@@ -3,7 +3,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <unistd.h>
+#ifdef _WIN32
+	#include "include/winuinistd.h"
+#else
+	#include <unistd.h>
+#endif
 #include <errno.h>
 
 #include "version.h"
