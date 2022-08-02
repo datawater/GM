@@ -1,7 +1,7 @@
 @echo off
 rem launch this from msvs-enabled console
 
-set CXXFLAGS=/std:c11 /O2 /nologo
+set CXXFLAGS=/std:c11 /O2 /DWIN32 /D_WINDOWS /W3 /GR /EHsc /nologo
 set LIBS=Shell32.lib
 
 cl.exe %CXXFLAGS% %INCLUDES% /Fe"gasm.debug.exe" src/gasm.c ^
