@@ -4,7 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #ifdef _WIN32
-	#include "include/winuinistd.h"
+	#include "include/winunistd.h"
 #else
 	#include <unistd.h>
 #endif
