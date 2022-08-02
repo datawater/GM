@@ -20,6 +20,7 @@
 int *PIPEDORNOT;
 
 void usage() {
+	architecture();
 	char* author  = "datawater <datawater1@gmail.com>";
 	char* version = malloc(sizeof(char)*6); snprintf(version, (size_t) 6, "%d.%d.%d", MAJOR_VERSION, MINOR_VERSION, SMALL_VERSION);
 	if (*PIPEDORNOT) {
