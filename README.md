@@ -8,7 +8,7 @@ GM - Grandmaster machine. A virtual machine with its own assembler (coming soon:
 - [Screenshots](#Screenshots)
 - [Authors](#Authors)
 <p align="center" width="100%">
-    <img src="https://raw.githubusercontent.com/datawater/GM/main/assets/logo-horizontal.png">
+    <img src="https://i.postimg.cc/pXHL1WTX/logo-horizontal.png">
     <br>
     <img src="https://github.com/datawater/gm/actions/workflows/ci.yml/badge.svg?style=flat-square">
     <img src="https://img.shields.io/github/last-commit/datawater/GM?style=flat-square">
