@@ -1,8 +1,8 @@
 nop # no operation
-push 
+push 69
 pop
 push 69 420 
-swap 
+swap
 dup
 add 1 # add, sub, div and mul have optional arguments. 
 		   # if an argument is not provided it (adds || subtracts || divides || multiplies) the first two elements on the stack,
@@ -10,12 +10,12 @@ add 1 # add, sub, div and mul have optional arguments.
 		   # if an argument is provided it (adds || subtracts || divides || multiplies) to the last element of the stack
 sub 1
 over
-cls 
+cls
 push 69 
-div  23 
-mul 2 
+div  23
+mul 2
 sub 4 
-bitl 4 
+bitl 4
 bitr 4 
 cls
 halt 0 # Exits with the exit code x

@@ -29,23 +29,3 @@ jobs:
           make release
         env:
           CC: clang
-  build-windows-gcc:
-    runs-on: macos-12
-    steps:
-      - uses: actions/checkout@v2
-      - name: Install dependencies
-        run: |
-          apt-get install mingw-w64
-          dpkg --add-architecture i386 
-          wget -nc -O /usr/share/keyrings/winehq-archive.key https://dl.winehq.org/wine-builds/winehq.key
-          wget -nc -P /etc/apt/sources.list.d/ https://dl.winehq.org/wine-builds/ubuntu/dists/jammy/winehq-jammy.sources 
-          apt update
-          apt install --install-recommends winehq-stable
-       - name: build
-         run: |
-           make release
-        - name: test
-          run: |
-            make test
-        env:
-          CC: x86_64-w64-mingw32-gcc
