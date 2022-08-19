@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic -lm
+CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic
 
 main:
 	@rm -fdr out/ 
@@ -32,16 +32,16 @@ test: main
 
 
 gasm: src/gasm.c
-	$(CC) $(CFLAGS) -o out/gasm -O0 -ggdb src/gasm.c
+	$(CC) -lm $(CFLAGS) -o out/gasm -O0 -ggdb src/gasm.c
 
 gasm-release: src/gasm.c
-	$(CC) $(CFLAGS) -o out/gasm -O0 -s src/gasm.c
+	$(CC) -lm $(CFLAGS) -o out/gasm -O0 -s src/gasm.c
 
 gm: src/gm.c
-	$(CC) $(CFLAGS) -o out/gm -O0 -ggdb src/gm.c
+	$(CC) -lm $(CFLAGS) -o out/gm -O0 -ggdb src/gm.c
 
 gm-release: src/gm.c
-	$(CC) $(CFLAGS) -o out/gm -O2 -s src/gm.c
+	$(CC) -lm $(CFLAGS) -o out/gm -O2 -s src/gm.c
 
 todo:
 	@grep "TODO: " -rn . --exclude="README.md" --exclude="Makefile" --color=always
