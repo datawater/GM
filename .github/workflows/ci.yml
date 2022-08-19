@@ -2,15 +2,6 @@ name: CI
 on: [push, pull_request]
 
 jobs:
-  build-linux-gcc:
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v1
-      - name: Build on linux with gcc
-        run: |
-          make release
-        env:
-          CC: gcc
   build-linux-clang:
     runs-on: ubuntu-18.04
     steps:
