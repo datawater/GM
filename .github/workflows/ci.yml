@@ -29,11 +29,11 @@ jobs:
           make release
         env:
           CC: clang
-  build-windows-mingw:
+  build-macos-gcc:
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v2
-      - name: Install depedencies (mingw-w64 and wine
+      - name: Install dependencies
         run: |
           apt-get install mingw-w64
           dpkg --add-architecture i386 
@@ -48,4 +48,4 @@ jobs:
           run: |
             make test
         env:
-          CC: clang
+          CC: x86_64-w64-mingw32-gcc
