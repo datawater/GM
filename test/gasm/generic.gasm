@@ -18,5 +18,6 @@ sub 4
 bitl 4
 bitr 4 
 cls
-halt 0 # Exits with the exit code x
+#halt 0 # Exits with the exit code x
+if a = a
 #jmp 0 # jumps to the first line (lines are numbered from 0)

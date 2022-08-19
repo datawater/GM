@@ -87,8 +87,21 @@ void parse_file(char* input, char* output) {
 			}
 		}
 		if (isspace(args[strlen(args)-1])) {args[strlen(args)-1] = '\0';}
+		
+		if (strcmp(type, "if" ) == 0) {
+			gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, (uint64_t) 3});
+			for (int j = 0; j < (int) strlen(args); j++) {
+				gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, (uint64_t) args[j]});
+			}
+			gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x11, -1});
+			continue;
+		}
 
-		if (strcmp(type, "push") == 0 || strcmp(type, "add") == 0 || strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 || strcmp(type, "div") == 0 || strcmp(type, "bitl") == 0 || strcmp(type, "bitr") == 0 || strcmp(type, "jmp") == 0 || strcmp(type, "add") == 0 || strcmp(type, "halt") == 0) {
+		if (strcmp(type, "push") == 0 || strcmp(type, "add") == 0 
+			|| strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 
+			|| strcmp(type, "div") == 0 || strcmp(type, "bitl") == 0 
+			|| strcmp(type, "bitr") == 0 || strcmp(type, "jmp") == 0 
+			|| strcmp(type, "add") == 0 || strcmp(type, "halt") == 0) {
 			if (strlen(args) == 0) {
 				if (strcmp(type, "add") == 0 || strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 || strcmp(type, "div") == 0) {write_instruction(type, args,outputfp); continue;}
 				char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Argument is not on line: %i\n", line_num);
@@ -113,9 +126,7 @@ void parse_file(char* input, char* output) {
 			} else {
 				if (strstr(args, "'")) {
 					// printf("String!\n");
-					ASM_INSTRUCTION instruction = gasm_text_instruction_to_instruction((TEXT_ASM_INSTRUCTION) {type, 3});
-					BINARY_ASM_INSTRUCTION binary_instruction = gasm_instruction_to_binary_instruction(instruction);
-					gasm_write_binary_instruction(outputfp, binary_instruction); // EOT
+					write_instruction(type, "3",outputfp);
 					for (int j = 1; j < (int) strlen(args); j++) {
 						if (args[j] != '\'' && args[j-1] != '\\') {
 							gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, (int) args[j]});

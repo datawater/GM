@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic 
+CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic -lm
 
 main:
 	@rm -fdr out/ 
@@ -12,21 +12,25 @@ release:
 	make gasm-release
 	make gm-release
 
+run-tests:
+	./out/gasm test/gasm/generic.gasm test/gm/generic.gm
+	./out/gasm test/gasm/string.gasm test/gm/string.gm
+	./out/gasm test/gasm/fibonacci.gasm test/gm/fibonacci.gm
+	./out/gm test/gm/generic.gm
+	./out/gm test/gm/string.gm
+	# ./out/gm test/gm/fibonacci.gm
+
 test-release: release
 	@rm -fdr test/gm
 	mkdir -p test/gm
-	./out/gasm test/gasm/generic.gasm test/gm/generic.gm
-	./out/gasm test/gasm/string.gasm test/gm/string.gm
-	./out/gm test/gm/generic.gm
-	./out/gm test/gm/string.gm
+	make run-tests
 
 test: main
 	@rm -fdr test/gm	
 	mkdir -p test/gm
-	./out/gasm test/gasm/generic.gasm test/gm/generic.gm
-	./out/gasm test/gasm/string.gasm test/gm/string.gm
-	./out/gm test/gm/generic.gm
-	./out/gm test/gm/string.gm
+	make run-tests
+
+
 gasm: src/gasm.c
 	$(CC) $(CFLAGS) -o out/gasm -O0 -ggdb src/gasm.c
 
@@ -40,8 +44,7 @@ gm-release: src/gm.c
 	$(CC) $(CFLAGS) -o out/gm -O2 -s src/gm.c
 
 todo:
-	@grep "TODO: " -rn . --exclude="flag.h" --exclude="Makefile" --exclude="TODO.md" --color=always
-	
+	@grep "TODO: " -rn . --exclude="README.md" --exclude="Makefile" --color=always
 
 test-gm: test-gasm
 	make gm-release

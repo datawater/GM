@@ -20,6 +20,7 @@ char* trim(char * s);
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <math.h>
 
 #include <sys/stat.h>
 
@@ -32,6 +33,14 @@ void architecture() {
     } else if ((int) sizeof(void*) == 4) {
         #define BIT_32
     }
+}
+
+char *itoa(long n) {
+    int len = n == 0 ? 1 : floor(log10l(labs(n)))+1;
+    if (n < 0) len++;
+    char *buf = calloc(sizeof(char), len+1);
+    snprintf(buf, len+1, "%ld", n);
+    return buf;
 }
 
 void todo(char* msg, int line, char* file, int failornot) {

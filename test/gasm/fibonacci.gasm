@@ -1,0 +1,3 @@
+push 0 1
+add
+jmp 3
