@@ -106,27 +106,62 @@ void gm_evaluate_program(GM *gm) {
 				gm->stack[gm->stack_size-3] = e1;
 			} break;
 			case GASM_ADD: {
-				if ((int) gm->stack_size < 1) {
-					gm_error(GM_NOT_ENOUGH_ERR);
+				if (gm->program[i].arguments == NULL) {
+					if ((int) gm->stack_size < 2) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					int p = gm->stack[gm->stack_size-1] + gm->stack[gm->stack_size-2];
+					gm->stack[gm->stack_size-2] = p;  gm->stack_size--;
+				} else {
+					if ((int) gm->stack_size < 1) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] + gm->program[i].arguments;
 				}
-				gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] + gm->program[i].arguments;
 			} break;
 			case GASM_SUB: {
-				if ((int) gm->stack_size < 1) {
-					gm_error(GM_NOT_ENOUGH_ERR);
+				if (gm->program[i].arguments == NULL) {
+					if ((int) gm->stack_size < 2) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					int p = gm->stack[gm->stack_size-1] - gm->stack[gm->stack_size-2];
+					gm->stack[gm->stack_size-2] = p;  gm->stack_size--;
+				} else {
+					if ((int) gm->stack_size < 1) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] - gm->program[i].arguments;
 				}
-				gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] - gm->program[i].arguments;
 			} break;
 			case GASM_MUL: {
-				if ((int) gm->stack_size < 1) {
-					gm_error(GM_NOT_ENOUGH_ERR);
+				if (gm->program[i].arguments == NULL) {
+					if ((int) gm->stack_size < 2) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					int p = gm->stack[gm->stack_size-1] * gm->stack[gm->stack_size-2];
+					gm->stack[gm->stack_size-2] = p;  gm->stack_size--;
+				} else {
+					if ((int) gm->stack_size < 1) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] * gm->program[i].arguments;
 				}
-				gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] * gm->program[i].arguments;
 			} break;
 			case GASM_DIV: {
-				if ((int) gm->stack_size < 1) {gm_error(GM_NOT_ENOUGH_ERR);}
-				if (gm->stack[gm->stack_size-1] % gm->program[i].arguments != 0) {gm_warn(GM_NOT_CLEAN_DIV_WARN);}
-				gm->stack[gm->stack_size-1] = (int64_t) (gm->stack[gm->stack_size-1] / gm->program[i].arguments);
+				if (gm->program[i].arguments == NULL) {
+					if ((int) gm->stack_size < 2) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					if (gm->stack[gm->stack_size-1] % gm->stack[gm->stack_size-2]) {gm_warn(GM_NOT_CLEAN_DIV_WARN);}
+					int p = gm->stack[gm->stack_size-1] / gm->stack[gm->stack_size-2];
+					gm->stack[gm->stack_size-2] = p;  gm->stack_size--;
+				} else {
+					if ((int) gm->stack_size < 1) { 
+						gm_error(GM_NOT_ENOUGH_ERR);
+					}
+					if (gm->stack[gm->stack_size-1] % gm->program[i].arguments) {gm_warn(GM_NOT_CLEAN_DIV_WARN);}
+					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] / gm->program[i].arguments;
+				}
 			} break;
 			case GASM_BIT_L: {
 				if ((int) gm->stack_size < 1) {
@@ -155,7 +190,7 @@ void gm_evaluate_program(GM *gm) {
 					gm_error(GM_NOT_ENOUGH_ERR);
 				}
 				if (gm->program[i].arguments == 10 || gm->program[i].arguments == 11) {
-					int r[256]; int k = 0;
+					int r[256] = {0}; int k = 0;
 					while (gm->stack[0] == (uint64_t) 3) {
 						r[k] = (int) gm->stack[gm->stack_size-1];
 						gm->stack[gm->stack_size] = '\0';

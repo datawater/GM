@@ -38,6 +38,19 @@ void usage() {
 	free(version);
 }
 
+void write_instruction(char* type, char* args, FILE* outputfp) {
+	ASM_INSTRUCTION instruction = gasm_text_instruction_to_instruction((TEXT_ASM_INSTRUCTION) {type, atoi(args)});
+	if (instruction.type == 255) {
+		char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Invalid Assembly instruction: %s\n", type);
+		!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
+		free(errmsg);
+		exit(1);
+	}
+
+	BINARY_ASM_INSTRUCTION binary_instruction = gasm_instruction_to_binary_instruction(instruction);
+	gasm_write_binary_instruction(outputfp, binary_instruction);
+}
+
 void parse_file(char* input, char* output) {
 	FILE* inputfp = fopen(input, "r"); FILE* outputfp = fopen(output, "wb");
 	gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x01, 0});
@@ -77,6 +90,7 @@ void parse_file(char* input, char* output) {
 
 		if (strcmp(type, "push") == 0 || strcmp(type, "add") == 0 || strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 || strcmp(type, "div") == 0 || strcmp(type, "bitl") == 0 || strcmp(type, "bitr") == 0 || strcmp(type, "jmp") == 0 || strcmp(type, "add") == 0 || strcmp(type, "halt") == 0) {
 			if (strlen(args) == 0) {
+				if (strcmp(type, "add") == 0 || strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 || strcmp(type, "div") == 0) {write_instruction(type, args,outputfp); continue;}
 				char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Argument is not on line: %i\n", line_num);
 				!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 				free(errmsg);
@@ -130,16 +144,8 @@ void parse_file(char* input, char* output) {
 			}
 		}
 
-		ASM_INSTRUCTION instruction = gasm_text_instruction_to_instruction((TEXT_ASM_INSTRUCTION) {type, atoi(args)});
-		if (instruction.type == 255) {
-			char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Invalid Assembly instruction: %s\n", type);
-			!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
-			free(errmsg);
-			exit(1);
-		}
+		write_instruction(type,args,outputfp);
 
-		BINARY_ASM_INSTRUCTION binary_instruction = gasm_instruction_to_binary_instruction(instruction);
-		gasm_write_binary_instruction(outputfp, binary_instruction);
 		//fflush(outputfp);
 		line[0] = '\0';
 		++line_num;

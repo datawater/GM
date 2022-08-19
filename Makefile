@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic
+CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic 
 
 main:
 	@rm -fdr out/ 
