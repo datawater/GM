@@ -3,15 +3,15 @@
 #include <stdint.h>
 
 typedef enum {
-	// TODO: implement new instructions such as: if (cmp)
+	// TODO: implement new instructions
 	/*
 		Arethmetic operations: [x]
 		bitshit operations:		  [x]
 		Jump instruction:			  [x]
 		variables:						  [  ]
 		if statements:				  [  ]
-		halt instruction:			  [  ]
-		print instruction:			  [  ]
+		halt instruction:			  [x]
+		print instruction:			  [x]
 		maybe linux syscalls:	  [ ? ]
 	*/
 	GASM_NOP,
