@@ -29,7 +29,7 @@ jobs:
           make release
         env:
           CC: clang
-  build-macos-gcc:
+  build-windows-gcc:
     runs-on: macos-12
     steps:
       - uses: actions/checkout@v2
