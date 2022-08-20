@@ -155,11 +155,7 @@ ASM_INSTRUCTION  gasm_binary_instruction_to_instruction(const BINARY_ASM_INSTRUC
 void gasm_write_binary_instruction(FILE* fd, const BINARY_ASM_INSTRUCTION instruction) {
 	uint8_t t = instruction.type;
 	fprintf(fd, "%c", t); 
-	#ifdef BIT_64
-		t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D || t == 0x0E  || t == 0x0F || t == 0x10 || 0x11 ? fprintf(fd, ":%ld%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
-	#else
-		t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D || t == 0x0E  || t == 0x0F || t == 0x10 || 0x11 ? fprintf(fd, ":%llu%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
-	#endif
+	t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D || t == 0x0E  || t == 0x0F || t == 0x10 || 0x11 ? fprintf(fd, ":%ld%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
 }
 
 #endif // ASM_IMPLEMENTATION

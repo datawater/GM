@@ -20,7 +20,6 @@
 int *PIPEDORNOT;
 
 void usage() {
-	architecture();
 	char* author  = "datawater <datawater1@gmail.com>";
 	char* version = malloc(sizeof(char)*6); snprintf(version, (size_t) 6, "%d.%d.%d", MAJOR_VERSION, MINOR_VERSION, SMALL_VERSION);
 	if (*PIPEDORNOT) {
@@ -41,7 +40,7 @@ void usage() {
 void write_instruction(char* type, char* args, FILE* outputfp) {
 	ASM_INSTRUCTION instruction = gasm_text_instruction_to_instruction((TEXT_ASM_INSTRUCTION) {type, atoi(args)});
 	if (instruction.type == 255) {
-		char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Invalid Assembly instruction: %s\n", type);
+		char* errmsg = malloc(sizeof(char) * 64); snprintf(errmsg, (size_t) 64, "Invalid Assembly instruction: %s\n", type);
 		!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 		free(errmsg);
 		exit(1);
@@ -56,7 +55,7 @@ void parse_file(char* input, char* output) {
 	gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x01, 0});
 
 	if (inputfp == NULL || outputfp == NULL) {
-		char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Error opening a file: %s\n", strerror(errno));
+		char* errmsg = malloc(sizeof(char) * 64); snprintf(errmsg, (size_t) 64, "Error opening a file: %s\n", strerror(errno));
 		!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 		free(errmsg);
 		exit(1);
@@ -104,7 +103,7 @@ void parse_file(char* input, char* output) {
 			|| strcmp(type, "add") == 0 || strcmp(type, "halt") == 0) {
 			if (strlen(args) == 0) {
 				if (strcmp(type, "add") == 0 || strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 || strcmp(type, "div") == 0) {write_instruction(type, args,outputfp); continue;}
-				char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Argument is not on line: %i\n", line_num);
+				char* errmsg = malloc(sizeof(char) * 64); snprintf(errmsg, (size_t) 64, "Argument is not on line: %i\n", line_num);
 				!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 				free(errmsg);
 				exit(1);

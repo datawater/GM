@@ -1,8 +1,6 @@
 #pragma once
 #include <stdbool.h>
 
-void architecture();
-
 void todo(char* msg, int line, char* file, int failornot);
 
 void error (char* msg);
@@ -26,14 +24,6 @@ char* trim(char * s);
 
 #define CONSOLE_IMPLEMENTATION
 #include "console.h"
-
-void architecture() {
-    if ((int) sizeof(void*) == 8) {
-        #define BIT_64
-    } else if ((int) sizeof(void*) == 4) {
-        #define BIT_32
-    }
-}
 
 char *itoa(long n) {
     int len = n == 0 ? 1 : floor(log10l(labs(n)))+1;

@@ -276,7 +276,7 @@ void gm_evaluate_program(GM *gm) {
 					--(gm->stack_size); u++;
 				}
 				memcpy(i, c, u+1);
-				for (int p = 0; p < u+1; ++p) printf("%c", i[u-p]);
+				for (int p = 0; p < u+1; ++p) printf("%c", (int) i[u-p]);
 			}
 			default: {};
 		}
