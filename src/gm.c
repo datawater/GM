@@ -65,7 +65,7 @@ int main(int argc, char** argv) {
 	FILE* bmfile = fopen(argv[1], "rb");
 
 	if (bmfile == NULL) {
-		char* errmsg = malloc(sizeof(char) * 64); sprintf(errmsg,"Error opening a file: %s\n", strerror(errno));
+		char* errmsg = malloc(sizeof(char) * 64); snprintf(errmsg, 64, "Error opening a file: %s\n", strerror(errno));
 		!*PIPEDORNOT ? error(errmsg) : (void) printf("%s",errmsg);
 		free(errmsg);
 		exit(1);
