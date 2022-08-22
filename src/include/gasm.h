@@ -60,6 +60,7 @@ void 										  gasm_write_binary_instruction(FILE* fd, const BINARY_ASM_INSTRU
 #ifdef ASM_IMPLEMENTATION
 
 #include <string.h>
+#include <inttypes.h>
 
 #pragma GCC diagnostic push
 #pragma GCC diagnostic warning "-Wswitch-enum"
@@ -197,7 +198,7 @@ ASM_INSTRUCTION  gasm_binary_instruction_to_instruction(const BINARY_ASM_INSTRUC
 void gasm_write_binary_instruction(FILE* fd, const BINARY_ASM_INSTRUCTION instruction) {
 	uint8_t t = instruction.type;
 	fprintf(fd, "%c", t); 
-	t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D || t == 0x0E  || t == 0x0F || t == 0x10 ? fprintf(fd, ":%ld%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
+	t == 0x02 || t == 0x08 || t ==0x09 || t == 0x0A || t == 0x0B || t == 0x0C || t == 0x0D || t == 0x0E  || t == 0x0F || t == 0x10 ? fprintf(fd, ":%" PRIu64 "c%c", instruction.arguments, '\0') : fprintf(fd, "%c",'\0');
 }
 
 #endif // ASM_IMPLEMENTATION

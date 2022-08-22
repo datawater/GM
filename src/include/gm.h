@@ -36,6 +36,7 @@ size_t size_tdup(size_t n);
 
 #include <stdlib.h>
 #include <assert.h>
+#include <inttypes.h>
 
 #define UTILS_IMPLEMENTATION
 #include "utils.h"
@@ -248,7 +249,7 @@ void gm_evaluate_program(GM *gm) {
 					};
 					if (gm->program[i].arguments == 11) {printf("\n");}
 				} else if (gm->program[i].arguments == 12 || gm->program[i].arguments == 13) {
-					printf("%li\n",gm->stack[gm->stack_size-1]);
+					printf("%" PRIu64 "\n",gm->stack[gm->stack_size-1]);
 					gm->stack[gm->stack_size] = '\0';
 					--(gm->stack_size);
 					if (gm->program[i].arguments == 13) {printf("\n");}
@@ -285,7 +286,7 @@ void gm_evaluate_program(GM *gm) {
 void print_stack(const GM* gm) {
 	printf("Stack:\t");
 	for (int i = 0; i < (int) gm->stack_size; ++i) {
-		i != (int) gm->stack_size-1 ? (void) printf("%ld,", gm->stack[i]) : (void) printf("%ld", gm->stack[i]);
+		i != (int) gm->stack_size-1 ? (void) printf("%" PRIu64 ",", gm->stack[i]) : (void) printf("%"PRIu64, gm->stack[i]);
 	}
 	printf("\n");
 }
