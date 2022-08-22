@@ -1,6 +1,6 @@
 nop # no operation
 push 69
-pop
+cls
 push 69 420 
 swap
 dup
@@ -18,6 +18,12 @@ sub 4
 bitl 4
 bitr 4 
 cls
-#halt 0 # Exits with the exit code x
-if a = a
+push 69 420
+more
+if
+pop
+push 'HIT!'
+print 11
+endif
+halt 0 # Exits with the exit code x
 #jmp 0 # jumps to the first line (lines are numbered from 0)

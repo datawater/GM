@@ -88,13 +88,14 @@ void parse_file(char* input, char* output) {
 		if (isspace(args[strlen(args)-1])) {args[strlen(args)-1] = '\0';}
 		
 		if (strcmp(type, "if" ) == 0) {
-			gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, (uint64_t) 3});
 			for (int j = 0; j < (int) strlen(args); j++) {
 				gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, (uint64_t) args[j]});
 			}
 			gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x11, -1});
 			continue;
 		}
+
+		// printf("%s\n", args);
 
 		if (strcmp(type, "push") == 0 || strcmp(type, "add") == 0 
 			|| strcmp(type, "sub") == 0 || strcmp(type, "mul") == 0 
@@ -133,11 +134,14 @@ void parse_file(char* input, char* output) {
 					}
 					continue;
 				} else if (strstr(args, " ") || strstr(args, ",")) {
-					char s[64];
+					char s[64] = {0};
 					for (int j = 0; j < (int) strlen(args); j++) {
+						// printf("i: %d,  s: %s\n", j, s);
 						if (args[j] == ' ') {
+							// printf("space: %s\n",s);
 							gasm_write_binary_instruction(outputfp, (BINARY_ASM_INSTRUCTION) {0x02, atoi(s)});
-							memset(s, 0, 64); args += j+1; j = -1;
+							memset(s, '\0', 64); args += j+1; j = -1;
+							continue;
 						}
 						s[j] = args[j];
 					}
@@ -153,13 +157,10 @@ void parse_file(char* input, char* output) {
 				}
 			}
 		}
-
 		write_instruction(type,args,outputfp);
 
-		//fflush(outputfp);
 		line[0] = '\0';
 		++line_num;
-		//free(args);
 	}
 }
 

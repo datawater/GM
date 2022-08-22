@@ -35,6 +35,7 @@ size_t size_tdup(size_t n);
 #ifdef GM_IMPLEMENTATION
 
 #include <stdlib.h>
+#include <assert.h>
 
 #define UTILS_IMPLEMENTATION
 #include "utils.h"
@@ -55,21 +56,16 @@ void gm_error(GM_ERROR err) {
 void gm_warn(GM_WARN warn) {
 	switch (warn) {
 		case GM_NOT_CLEAN_DIV_WARN: printf("[WARNING] Number not cleanly divisible by other one");
+		default: {};
 	}
 }
 
-int check_xflow(int64_t a, int64_t b, int64_t s) {
-	if (a > 0 && b > 0 && s < 0) {
-		return 1; // INT OVERFLOW
-	} if (a < 0 && b < 0 && s > 0) {
-		return 2; // INT UNDERFLOW
-	}
-	return 0;
+static inline int check_xflow(int64_t a, int64_t b, int64_t s) {
+	return (a > 0 && b > 0 && s < 0) ? 1 : (a < 0 && b < 0 && s > 0) ? 2 : 0;
 }
 
 void gm_evaluate_program(GM *gm) {
-	const int prog_size = (int) gm->program_size;
-	for (int i = 0; i < prog_size; i++) {	
+	for (int i = 0; i < (int) gm->program_size; i++) {	
 		switch (gm->program[i].type) {
 			case GASM_PUSH: {
 				if (gm->stack_size == GM_STACK_CAPASITY) {
@@ -143,7 +139,7 @@ void gm_evaluate_program(GM *gm) {
 					} else if (check_xflow(gm->stack[gm->stack_size-1], gm->program[i].arguments, gm->stack[gm->stack_size-1] + gm->program[i].arguments) == 2) {
 						gm_error(GM_INT_UNDERFLOW_ERR);
 					}
-					gm->stack_size++;
+					// printf("%d %d %d\n", gm->stack[gm->stack_size-2], gm->program[i].arguments, gm->stack[gm->stack_size-1] + gm->program[i].arguments);
 					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] + gm->program[i].arguments;
 				}
 			} break;
@@ -169,7 +165,6 @@ void gm_evaluate_program(GM *gm) {
 					} else if (check_xflow(gm->stack[gm->stack_size-1], gm->program[i].arguments, gm->stack[gm->stack_size-1] - gm->program[i].arguments) == 2) {
 						gm_error(GM_INT_UNDERFLOW_ERR);
 					}
-					gm->stack_size++;
 					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] - gm->program[i].arguments;
 				}
 			} break;
@@ -184,7 +179,6 @@ void gm_evaluate_program(GM *gm) {
 					} else if (check_xflow(gm->stack[gm->stack_size-1], gm->stack[gm->stack_size-2], p) == 2) {
 						gm_error(GM_INT_UNDERFLOW_ERR);
 					}
-					gm->stack_size++;
 					gm->stack[gm->stack_size-1] = p;
 				} else {
 					if ((int) gm->stack_size < 1) { 
@@ -195,7 +189,6 @@ void gm_evaluate_program(GM *gm) {
 					} else if (check_xflow(gm->stack[gm->stack_size-1], gm->program[i].arguments, gm->stack[gm->stack_size-1] * gm->program[i].arguments) == 2) {
 						gm_error(GM_INT_UNDERFLOW_ERR);
 					}
-					gm->stack_size++;
 					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] * gm->program[i].arguments;
 				}
 			} break;
@@ -213,7 +206,6 @@ void gm_evaluate_program(GM *gm) {
 						gm_error(GM_NOT_ENOUGH_ERR);
 					}
 					if (gm->stack[gm->stack_size-1] % gm->program[i].arguments) {gm_warn(GM_NOT_CLEAN_DIV_WARN);}
-					gm->stack_size++;
 					gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] / gm->program[i].arguments;
 				}
 			} break;
@@ -221,14 +213,12 @@ void gm_evaluate_program(GM *gm) {
 				if ((int) gm->stack_size < 1) {
 					gm_error(GM_NOT_ENOUGH_ERR);
 				}
-				gm->stack_size++;
 				gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] << gm->program[i].arguments;
 			} break;
 			case GASM_BIT_R: {
 				if ((int) gm->stack_size < 1) {
 					gm_error(GM_NOT_ENOUGH_ERR);
 				}
-				gm->stack_size++;
 				gm->stack[gm->stack_size-1] = gm->stack[gm->stack_size-1] >> gm->program[i].arguments;
 			} break;
 			case GASM_JMP: {
@@ -268,16 +258,26 @@ void gm_evaluate_program(GM *gm) {
 			} break;
 			case GASM_IF: {
 				// TODO: !CRITICAL! FINISH THE IF STATEMMENT IMPLEMENTATION!! 
-				uint64_t     i[256] = {0}; int u = 0;
-				char           c[256] = {0};
-				while(gm->stack[0] == (uint64_t) 3) {
-					i[u] = (int) gm->stack[gm->stack_size];
-					gm->stack[gm->stack_size] = '\0';
-					--(gm->stack_size); u++;
-				}
-				memcpy(i, c, u+1);
-				for (int p = 0; p < u+1; ++p) printf("%c", (int) i[u-p]);
-			}
+				// assert(0 && "TODO: Implement GASM_IF!!");
+				int j = i+1;
+				while (gm->program[j].type != GASM_ENDIF) {j++;}
+				gm->stack[gm->stack_size-1] == 0 ? i = j : (void) 0; 
+			} break;
+			case GASM_EQU: {
+				int p = gm->stack[gm->stack_size-1] == gm->stack[gm->stack_size-2]; 
+				gm->stack_size--; gm->stack[gm->stack_size] = '\0';
+				gm->stack[gm->stack_size-1] = p ? 1 : 0;
+			} break;
+			case GASM_MORE: {
+				int p = gm->stack[gm->stack_size-1] > gm->stack[gm->stack_size-2]; 
+				gm->stack_size--; gm->stack[gm->stack_size] = '\0';
+				gm->stack[gm->stack_size-1] = p ? 1 : 0;
+			} break;
+			case GASM_LESS: {
+				int p = gm->stack[gm->stack_size-1] < gm->stack[gm->stack_size-2]; 
+				gm->stack_size--; gm->stack[gm->stack_size] = '\0';
+				gm->stack[gm->stack_size-1] = p ? 1 : 0;
+			} break;
 			default: {};
 		}
 		print_stack(gm);
