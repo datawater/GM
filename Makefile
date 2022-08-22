@@ -1,4 +1,4 @@
-CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic
+CFLAGS = -Wall -Wextra -std=c99 -Wformat-security -pedantic 
 
 main:
 	@rm -fdr out/ 
@@ -18,7 +18,7 @@ run-tests:
 	./out/gasm test/gasm/fibonacci.gasm test/gm/fibonacci.gm
 	./out/gm test/gm/generic.gm
 	./out/gm test/gm/string.gm
-	# ./out/gm test/gm/fibonacci.gm
+	./out/gm test/gm/fibonacci.gm
 
 test-release: release
 	@rm -fdr test/gm

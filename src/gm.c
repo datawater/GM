@@ -72,7 +72,7 @@ int main(int argc, char** argv) {
 	}
 
 	while ((bytes_read = fread(buffer, 1, 256, bmfile)) > 0) {
-		int8_t type; char argument[8] = {0}; short j = -1;
+		static int8_t type; char argument[8] = {0}; short j = -1;
 		for (int i = 0; i < 256; ++i) {
 			memset(argument, 0, 8);
 			if (buffer[i] == 0) {type = -1; continue;} if (buffer[i] == -1) {break;}
