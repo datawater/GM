@@ -226,7 +226,8 @@ void gm_evaluate_program(GM *gm) {
 				if (gm->program_size-1 == gm->program[i].arguments) {
 					gm_error(GM_JUMP_ITSELF_ERR);
 				}
-				// printf("::: %d\n", i);
+
+				// printf("::: %d ::: %d\n", i, (int) (gm->program[i].arguments)-1);
 				i = (gm->program[i].arguments)-1;
 			} break;
 			case GASM_HALT: {
@@ -249,7 +250,7 @@ void gm_evaluate_program(GM *gm) {
 					};
 					if (gm->program[i].arguments == 11) {printf("\n");}
 				} else if (gm->program[i].arguments == 12 || gm->program[i].arguments == 13) {
-					printf("%" PRIu64 "\n",gm->stack[gm->stack_size-1]);
+					printf("%" PRIu64,gm->stack[gm->stack_size-1]);
 					gm->stack[gm->stack_size] = '\0';
 					--(gm->stack_size);
 					if (gm->program[i].arguments == 13) {printf("\n");}
@@ -279,7 +280,7 @@ void gm_evaluate_program(GM *gm) {
 			} break;
 			default: {};
 		}
-		print_stack(gm);
+		// print_stack(gm);
 	}
 }
 

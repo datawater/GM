@@ -13,7 +13,6 @@ typedef enum {
 		halt instruction:			  [x]
 		print instruction:			  [x]
 		maybe linux syscalls:	  [ ? ]
-		drop:								  [  ]
 	*/
 	GASM_NOP,
 	GASM_PUSH,
