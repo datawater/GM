@@ -257,8 +257,6 @@ void gm_evaluate_program(GM *gm) {
 				}
 			} break;
 			case GASM_IF: {
-				// TODO: !CRITICAL! FINISH THE IF STATEMMENT IMPLEMENTATION!! 
-				// assert(0 && "TODO: Implement GASM_IF!!");
 				int j = i+1;
 				while (gm->program[j].type != GASM_ENDIF) {j++;}
 				gm->stack[gm->stack_size-1] == 0 ? (void) (i = j) : (void) 0; 
