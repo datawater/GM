@@ -261,7 +261,7 @@ void gm_evaluate_program(GM *gm) {
 				// assert(0 && "TODO: Implement GASM_IF!!");
 				int j = i+1;
 				while (gm->program[j].type != GASM_ENDIF) {j++;}
-				gm->stack[gm->stack_size-1] == 0 ? i = j : (void) 0; 
+				gm->stack[gm->stack_size-1] == 0 ? (void) (i = j) : (void) 0; 
 			} break;
 			case GASM_EQU: {
 				int p = gm->stack[gm->stack_size-1] == gm->stack[gm->stack_size-2]; 
